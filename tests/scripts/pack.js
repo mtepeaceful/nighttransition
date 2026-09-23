@@ -1,5 +1,3 @@
-// Gera o .zip enviado à Chrome Web Store: só manifest.json, src/ e assets/,
-// com o manifest na raiz. Sem dependências: deflate do zlib e formato ZIP à mão.
 import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,7 +6,6 @@ import { deflateRawSync } from 'node:zlib';
 export const PACKAGE_ROOTS = ['manifest.json', 'src', 'assets'];
 const IGNORED_NAMES = new Set(['Thumbs.db', 'desktop.ini']);
 
-// Data fixa (1980-01-01 00:00, a mínima do ZIP) para o pacote ser reproduzível.
 const DOS_TIME = 0;
 const DOS_DATE = (0 << 9) | (1 << 5) | 1;
 

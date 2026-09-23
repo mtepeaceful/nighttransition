@@ -31,8 +31,6 @@
   box-sizing: border-box;
 }
 
-/* O html não rola: assim o body vira o contêiner de rolagem e o max-height
-   dele limita a altura do popup (senão o Chrome cresce até 600px). */
 html {
   overflow: hidden;
   background: var(--dusk);
@@ -52,7 +50,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ---------- barra de rolagem ---------- */
 body::-webkit-scrollbar {
   width: 6px;
 }
@@ -71,7 +68,6 @@ body::-webkit-scrollbar-thumb:hover {
   background: rgba(240, 168, 90, 0.45);
 }
 
-/* ---------- luz ambiente de pôr do sol ---------- */
 body::before,
 body::after {
   content: '';
@@ -97,7 +93,6 @@ body::after {
   filter: blur(40px);
 }
 
-/* ---------- superfícies de vidro ---------- */
 .filter-monitor {
   background: linear-gradient(150deg, rgba(240, 168, 90, 0.16), rgba(232, 132, 60, 0.05) 55%, rgba(36, 26, 20, 0));
   border: 1px solid rgba(240, 168, 90, 0.22);
@@ -113,7 +108,6 @@ body::after {
   backdrop-filter: blur(10px);
 }
 
-/* ---------- marca ---------- */
 .brand {
   display: flex;
   align-items: center;
@@ -155,7 +149,6 @@ h1 {
   color: var(--muted);
 }
 
-/* ---------- abas ---------- */
 .tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -213,7 +206,6 @@ h1 {
   color: var(--text-low);
 }
 
-/* ---------- monitor do filtro ---------- */
 .filter-monitor {
   display: grid;
   grid-template-columns: auto 1fr 1fr;
@@ -269,7 +261,6 @@ h1 {
   text-overflow: ellipsis;
 }
 
-/* ---------- ritual ---------- */
 .ritual-card {
   padding: 14px;
   margin-bottom: 10px;
@@ -343,7 +334,6 @@ h1 {
   transition: width 1s linear;
 }
 
-/* ---------- ativar / desativar ---------- */
 .manual-toggle {
   display: flex;
   align-items: center;
@@ -381,7 +371,6 @@ h1 {
   cursor: default;
 }
 
-/* ---------- configurações ---------- */
 form {
   display: flex;
   flex-direction: column;
@@ -500,7 +489,6 @@ input:disabled {
   color: var(--amber);
 }
 
-/* ---------- slider ---------- */
 input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
@@ -557,7 +545,6 @@ input[type='range']:focus-visible::-webkit-slider-thumb {
   color: var(--text-low);
 }
 
-/* ---------- sites bloqueados ---------- */
 .site-input-row {
   display: flex;
   gap: 8px;
@@ -651,7 +638,6 @@ input[type='range']:focus-visible::-webkit-slider-thumb {
   outline-offset: 1px;
 }
 
-/* ---------- botões ---------- */
 button {
   margin: 0;
   padding: 11px;

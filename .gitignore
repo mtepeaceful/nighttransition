@@ -1,52 +1,45 @@
-# === Chaves e pacotes de extensão Chrome (NUNCA versionar) ===
-# .pem é a chave privada que assina a extensão e define seu ID fixo.
-# Se vazar, qualquer um pode publicar atualizações maliciosas no seu lugar.
 *.pem
 *.pfx
 *.p12
 *.key
-key.pem
 *.crx
 
-# Pacotes gerados (build de distribuição)
 *.zip
 dist/
 build/
 release/
 
-# === Segredos e configuração local ===
 .env
 .env.*
 !.env.example
+.npmrc
 secrets.json
 *.secret
 credentials.json
 
-# Configurações locais do Claude Code (permissões/local do usuário, não do time)
 .claude/settings.local.json
 
-# === Node (caso ferramentas de build sejam adicionadas depois) ===
 node_modules/
 npm-debug.log*
 yarn-error.log*
 yarn-debug.log*
 pnpm-debug.log*
 .pnpm-store/
+.eslintcache
+coverage/
 
-# === Editores e IDEs ===
 .vscode/*
 !.vscode/extensions.json
 .idea/
 *.swp
 *.swo
 
-# === Sistema operacional ===
 .DS_Store
 Thumbs.db
 desktop.ini
 ehthumbs.db
 
-# === Logs e arquivos temporários ===
+temp/
 *.log
 *.tmp
 *.temp
