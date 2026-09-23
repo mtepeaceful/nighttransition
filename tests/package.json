@@ -1,0 +1,15 @@
+{
+  "name": "night-transition-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "lint": "cd .. && eslint --config tests/eslint.config.js src",
+    "check": "npm run lint && npm test"
+  },
+  "devDependencies": {
+    "eslint": "^10.11.0",
+    "eslint-plugin-no-unsanitized": "^4.1.5",
+    "globals": "^17.12.0"
+  }
+}

@@ -1,0 +1,84 @@
+#nt-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 1.5s ease-in-out;
+}
+
+.nt-reminder-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  background: rgba(10, 8, 18, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+  animation: nt-fade-in 0.25s ease-out;
+}
+
+.nt-reminder-box {
+  width: min(320px, 88vw);
+  background: #211c33;
+  color: #f2eefb;
+  border-radius: 14px;
+  padding: 22px 24px;
+  text-align: center;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+}
+
+.nt-reminder-box h2 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.nt-reminder-box .nt-site {
+  font-size: 13px;
+  color: #b8aed6;
+  margin: 0 0 14px;
+}
+
+.nt-reminder-box .nt-elapsed {
+  font-size: 13px;
+  color: #d9d2f0;
+  margin: 0 0 18px;
+}
+
+.nt-reminder-box .nt-elapsed strong {
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+}
+
+.nt-reminder-box button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #4a4368;
+  color: #f2eefb;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: not-allowed;
+  transition: background 0.2s;
+}
+
+.nt-reminder-box button:not(:disabled) {
+  background: #8c6bf2;
+  cursor: pointer;
+}
+
+.nt-reminder-box button:not(:disabled):hover {
+  background: #7a58e6;
+}
+
+@keyframes nt-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

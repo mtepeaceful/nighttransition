@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>NightTransition</title>
+    <link rel="stylesheet" href="popup.css" />
+    <script type="module" src="popup.js"></script>
+  </head>
+  <body>
+    <div class="brand">
+      <svg
+        class="brand-icon"
+        width="30"
+        height="30"
+        viewBox="0 0 32 32"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Ícone do NightTransition"
+      >
+        <defs>
+          <linearGradient id="nt-icon-bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#4a3a8f" />
+            <stop offset="55%" stop-color="#bb86fc" />
+            <stop offset="100%" stop-color="#ffc107" />
+          </linearGradient>
+          <radialGradient id="nt-icon-glow" cx="50%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35" />
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+
+        <rect width="32" height="32" rx="8" fill="url(#nt-icon-bg)" />
+        <rect width="32" height="32" rx="8" fill="url(#nt-icon-glow)" />
+
+        <circle cx="16" cy="16" r="10.9" fill="#fff5e3" />
+        <circle cx="22.8" cy="11.2" r="10.9" fill="url(#nt-icon-bg)" />
+
+        <circle cx="6.4" cy="23.7" r="1" fill="#fff5e3" opacity="0.85" />
+        <circle cx="25" cy="6.4" r="0.7" fill="#fff5e3" opacity="0.7" />
+      </svg>
+      <div>
+        <h1>NightTransition</h1>
+        <p class="subtitle">Ritual de desaceleração digital</p>
+      </div>
+    </div>
+
+    <nav class="tabs" role="tablist">
+      <button type="button" class="tab-btn active" data-tab="home" role="tab" aria-selected="true">
+        Início
+      </button>
+      <button type="button" class="tab-btn" data-tab="settings" role="tab" aria-selected="false">
+        Configurações
+      </button>
+    </nav>
+
+    <section id="view-home" class="view" role="tabpanel">
+      <div class="filter-monitor" aria-label="Filtro aplicado agora">
+        <span id="filter-swatch" class="filter-swatch" aria-hidden="true"></span>
+        <div class="metric">
+          <span class="metric-label">Temperatura</span>
+          <span id="filter-temperature" class="metric-value">—</span>
+          <span id="filter-stage" class="metric-sub"></span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Intensidade</span>
+          <span id="filter-intensity-current" class="metric-value">—</span>
+          <span id="filter-intensity-max" class="metric-sub"></span>
+        </div>
+      </div>
+
+      <div class="ritual-card">
+        <h2 class="ritual-title">
+          <span class="card-icon" aria-hidden="true">🌙</span> Ritual de desaceleração
+        </h2>
+        <p id="ritual-main" class="ritual-main" aria-live="polite">—</p>
+        <p id="ritual-detail" class="ritual-detail"></p>
+
+        <div id="site-reminder" class="site-reminder" hidden>
+          <p id="site-reminder-text" class="site-reminder-text" aria-live="polite"></p>
+          <div
+            id="site-reminder-progress"
+            class="progress"
+            role="progressbar"
+            aria-label="Tempo até a próxima pausa"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            <div id="site-reminder-bar" class="progress-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="manual-toggle">
+        <p id="mode-status">Modo noturno: —</p>
+        <button type="button" id="toggle-btn">Ativar agora</button>
+      </div>
+      <p class="hint">
+        O modo noturno é ativado automaticamente conforme seus horários
+        configurados.
+      </p>
+    </section>
+
+    <section id="view-settings" class="view" hidden role="tabpanel">
+      <form id="settings-form">
+        <fieldset class="card">
+          <legend><span class="card-icon" aria-hidden="true">🕐</span> Horários</legend>
+
+          <label for="start-time">Início do modo noturno</label>
+          <input type="time" id="start-time" name="start-time" required />
+
+          <label for="end-time">Fim do modo noturno</label>
+          <input type="time" id="end-time" name="end-time" required />
+        </fieldset>
+
+        <fieldset class="card">
+          <legend><span class="card-icon" aria-hidden="true">👁️</span> Efeitos visuais</legend>
+
+          <label class="checkbox-row" for="gradual-transition">
+            <input type="checkbox" id="gradual-transition" name="gradual-transition" />
+            Transição gradual (escurecer aos poucos)
+          </label>
+
+          <div id="transition-minutes-row" class="conditional-field">
+            <label for="transition-minutes">Duração da transição (minutos)</label>
+            <input
+              type="number"
+              id="transition-minutes"
+              name="transition-minutes"
+              min="0"
+              max="120"
+              step="1"
+            />
+          </div>
+
+          <label for="target-kelvin">
+            Temperatura do filtro:
+            <span class="kelvin-value"><span id="target-kelvin-value">3.400</span> K</span>
+            · <span id="target-kelvin-name">Âmbar</span>
+          </label>
+          <input
+            type="range"
+            id="target-kelvin"
+            name="target-kelvin"
+            min="1900"
+            max="6500"
+            step="100"
+            dir="rtl"
+            aria-describedby="target-kelvin-scale"
+          />
+          <div id="target-kelvin-scale" class="range-scale" aria-hidden="true">
+            <span>6.500 K neutro</span><span>1.900 K vela</span>
+          </div>
+
+          <label class="checkbox-row progressive-row" for="progressive-warming">
+            <input type="checkbox" id="progressive-warming" name="progressive-warming" />
+            Esquentar aos poucos ao longo da noite
+          </label>
+          <p class="field-hint-left">
+            Desligado: a temperatura escolhida vale a noite toda. Ligado: começa mais suave e chega
+            a ela no fim da noite.
+          </p>
+        </fieldset>
+
+        <fieldset class="card">
+          <legend><span class="card-icon" aria-hidden="true">🛡️</span> Foco e bloqueios</legend>
+
+          <label for="reminder-threshold">Lembrete após (minutos no site)</label>
+          <input
+            type="number"
+            id="reminder-threshold"
+            name="reminder-threshold"
+            min="1"
+            max="180"
+            step="1"
+          />
+
+          <label for="countdown-seconds">Duração do countdown (segundos)</label>
+          <input
+            type="number"
+            id="countdown-seconds"
+            name="countdown-seconds"
+            min="1"
+            max="60"
+            step="1"
+          />
+
+          <label for="site-input">Sites bloqueados</label>
+          <div class="site-input-row">
+            <input
+              type="text"
+              id="site-input"
+              inputmode="url"
+              autocomplete="off"
+              placeholder="ex: youtube.com"
+              aria-describedby="site-input-error"
+            />
+            <button type="button" id="add-site-btn" aria-label="Adicionar site">
+              Adicionar
+            </button>
+          </div>
+          <p id="site-input-error" class="field-error" hidden></p>
+
+          <ul id="blocked-sites-list" class="chip-list" aria-live="polite"></ul>
+          <p id="blocked-sites-empty" class="field-hint" hidden>
+            Nenhum site bloqueado ainda. Adicione um acima.
+          </p>
+        </fieldset>
+
+        <button type="submit">Salvar</button>
+        <p id="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </body>
+</html>
