@@ -5,7 +5,8 @@
   "scripts": {
     "test": "node --test",
     "lint": "cd .. && eslint --config tests/eslint.config.js src",
-    "check": "npm run lint && npm test"
+    "check": "npm run lint && npm test",
+    "pack": "npm run check && node scripts/pack.js"
   },
   "devDependencies": {
     "eslint": "^10.11.0",

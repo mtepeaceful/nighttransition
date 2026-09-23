@@ -13,6 +13,14 @@ test('usa Manifest V3', () => {
   assert.equal(manifest.manifest_version, 3);
 });
 
+test('nome e descrição cabem nos limites da Chrome Web Store', () => {
+  assert.ok(manifest.name.length <= 75, `name com ${manifest.name.length} caracteres (máx. 75)`);
+  assert.ok(
+    manifest.description.length <= 132,
+    `description com ${manifest.description.length} caracteres (máx. 132)`,
+  );
+});
+
 test('permissões são exatamente a allowlist (alterar exige revisão consciente)', () => {
   assert.deepEqual([...manifest.permissions].sort(), ALLOWED_PERMISSIONS);
   assert.equal(manifest.host_permissions, undefined);

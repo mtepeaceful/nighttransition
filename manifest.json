@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "NightTransition — Ritual de Desaceleração",
   "version": "1.1.0",
-  "description": "Aplica um ritual de desaceleração digital à noite: tom sépia, lembrete de tempo em sites de alto estímulo e um aviso de encerramento.",
+  "description": "Ritual noturno de desaceleração: aquece a cor das páginas aos poucos e lembra você de pausar em sites de alto estímulo.",
   "permissions": ["storage", "alarms", "notifications", "activeTab"],
   "background": {
     "service_worker": "src/background/service-worker.js",

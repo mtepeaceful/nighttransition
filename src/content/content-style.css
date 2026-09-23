@@ -12,7 +12,7 @@
   position: fixed;
   inset: 0;
   z-index: 2147483647;
-  background: rgba(10, 8, 18, 0.72);
+  background: rgba(23, 18, 14, 0.72);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,9 +22,10 @@
 
 .nt-reminder-box {
   width: min(320px, 88vw);
-  background: #211c33;
-  color: #f2eefb;
-  border-radius: 14px;
+  background: linear-gradient(150deg, #3a281c, #241a14 60%);
+  color: #f3e9dc;
+  border: 1px solid rgba(240, 168, 90, 0.25);
+  border-radius: 18px;
   padding: 22px 24px;
   text-align: center;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
@@ -32,23 +33,25 @@
 
 .nt-reminder-box h2 {
   margin: 0 0 8px;
-  font-size: 17px;
+  font-family: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .nt-reminder-box .nt-site {
   font-size: 13px;
-  color: #b8aed6;
+  color: #b7a493;
   margin: 0 0 14px;
 }
 
 .nt-reminder-box .nt-elapsed {
   font-size: 13px;
-  color: #d9d2f0;
+  color: rgba(243, 233, 220, 0.8);
   margin: 0 0 18px;
 }
 
 .nt-reminder-box .nt-elapsed strong {
-  color: #ffffff;
+  color: #f0a85a;
   font-variant-numeric: tabular-nums;
 }
 
@@ -56,22 +59,23 @@
   width: 100%;
   padding: 10px;
   border: none;
-  border-radius: 8px;
-  background: #4a4368;
-  color: #f2eefb;
+  border-radius: 12px;
+  background: rgba(243, 233, 220, 0.12);
+  color: rgba(243, 233, 220, 0.6);
   font-size: 13px;
   font-weight: 600;
   cursor: not-allowed;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .nt-reminder-box button:not(:disabled) {
-  background: #8c6bf2;
+  background: #f0a85a;
+  color: #17120e;
   cursor: pointer;
 }
 
 .nt-reminder-box button:not(:disabled):hover {
-  background: #7a58e6;
+  background: #e8843c;
 }
 
 @keyframes nt-fade-in {

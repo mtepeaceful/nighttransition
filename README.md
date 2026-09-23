@@ -17,7 +17,7 @@ A exposição a telas e luz azul (380–500nm) antes de dormir suprime a produç
 - **Monitor do filtro no popup** — mostra a temperatura de cor correlata (CCT) do branco da página com o filtro aplicado, calculada pela distância à curva do corpo negro no espaço CIE 1960 (6.500 K sem filtro). Mostra também o nome da faixa atual (luz do dia, branco-quente, âmbar, luz de vela) e a intensidade: quanto do caminho entre 6.500 K e a temperatura escolhida já foi aplicado, que sobe durante a transição de entrada e, no modo progressivo, ao longo da noite.
 - **Card "Ritual de desaceleração"** — antes da noite, conta quanto falta para o aviso "Hora de desacelerar". Durante a noite, mostra até quando o ritual vai, ou se foi pausado manualmente. Se a aba atual é um site da lista, mostra também quanto falta para a próxima pausa naquele site, em mm:ss contando segundo a segundo, com barra de progresso. O tempo é contado pela aba enquanto ela está visível, com o popup aberto ou fechado. Ao abrir o popup, o Service Worker pede à aba o tempo ainda não reportado, então o valor exibido é exato. Se a aba foi aberta antes de instalar ou recarregar a extensão, o Chrome não conecta o content script a ela. O card pede para recarregar a aba. Se a aba está em segundo plano, a contagem aparece como pausada.
 - **Gestão de sites bloqueados por chips** — adicionar/remover sites com validação de domínio; cada alteração é salva na hora.
-- **Interface acessível** — dark UI baseada nos tokens de contraste do Material Design (WCAG AA), com hierarquia de texto por opacidade e cores dessaturadas para reduzir fadiga visual.
+- **Interface de pôr do sol** — popup escuro em tons de âmbar e brasa, com superfícies translúcidas e títulos em serifa, na mesma paleta do modal de lembrete. Tem altura máxima de 520px (as configurações rolam por dentro), foco visível para navegação por teclado e respeita a preferência do sistema por menos movimento.
 
 ## Instalação (modo desenvolvedor)
 
@@ -88,6 +88,7 @@ Não são solicitadas `tabs`, `history`, `scripting`, `webRequest` nem `host_per
 night-transition/
 ├── manifest.json
 ├── README.md
+├── PRIVACY.md                     # política de privacidade (URL usada na Chrome Web Store)
 ├── .gitignore                     # chaves .pem, pacotes .zip/.crx, segredos, node_modules
 ├── src/
 │   ├── background/
@@ -125,7 +126,10 @@ night-transition/
     ├── message-guard.test.js
     ├── service-worker.test.js     # integração com chrome.* simulado e relógio controlado
     ├── manifest.test.js
-    └── static-security.test.js
+    ├── static-security.test.js
+    ├── pack.test.js               # confere o conteúdo do .zip de publicação
+    └── scripts/
+        └── pack.js                # gera dist/night-transition-<versão>.zip
 ```
 
 Não há Side Panel. Toda a interface cabe no popup, e adicioná-lo exigiria a permissão `sidePanel` sem necessidade. Content scripts declarados no manifest não podem ser ES modules, então `content-script.js` não importa nada de `utils/` e repete só os dois tipos de mensagem que usa. Toda a lógica que ele precisaria importar fica no Service Worker.
@@ -151,14 +155,24 @@ npm run check
   - `service-worker.test.js`: o Service Worker real com `chrome.*` simulado e relógio controlado. Cobre liga/desliga no horário com uma única notificação, rampa do overlay, lembrete no tempo certo, repetição, recarga sem pular o lembrete, tempo de dia ou fora da lista não contado, abas simultâneas, reset ao fim da noite, expiração do modo manual com o navegador fechado, aviso do ritual mesmo com o filtro ligado manualmente de dia, estado do popup pela aba ativa e bloqueio de configurações vindas de content script.
   - `validation.test.js`: sanitização de configurações contra entrada maliciosa e prototype pollution.
   - `message-guard.test.js`: roteamento de mensagens. Rejeita outras extensões, content scripts tentando comandos da UI e payloads malformados.
-  - `manifest.test.js`: MV3, permissões iguais à allowlist, CSP restritiva, sem `host_permissions`/`web_accessible_resources`, arquivos referenciados existentes.
+  - `manifest.test.js`: MV3, nome e descrição dentro dos limites da Chrome Web Store (75 e 132 caracteres), permissões iguais à allowlist, CSP restritiva, sem `host_permissions`/`web_accessible_resources`, arquivos referenciados existentes.
   - `static-security.test.js`: varre `src/` atrás de sinks de XSS, execução dinâmica, URLs remotas, segredos hardcoded e scripts ou handlers inline no HTML.
+  - `pack.test.js`: o `.zip` de publicação tem o `manifest.json` na raiz, leva só `manifest.json`, `src/` e `assets/`, inclui tudo o que o manifest referencia, descompacta idêntico ao disco e é reproduzível.
 
 Adicionar uma permissão ao `manifest.json` quebra `manifest.test.js` de propósito. Quem adiciona precisa atualizar a allowlist no teste e justificar a permissão na tabela acima.
 
 ## Empacotamento
 
-Para publicar na Chrome Web Store, zipe apenas `manifest.json`, `src/` e `assets/`. `tests/`, `README.md` e `.gitignore` não entram no pacote. O `.gitignore` já impede que o `.zip` gerado, a chave `.pem` de assinatura e o `node_modules` sejam versionados.
+Para gerar o pacote da Chrome Web Store:
+
+```
+cd tests
+npm run pack
+```
+
+O script roda `npm run check` e, se tudo passar, gera `dist/night-transition-<versão>.zip` com apenas `manifest.json`, `src/` e `assets/`, com o manifest na raiz. `tests/`, `README.md`, `PRIVACY.md` e `.gitignore` não entram no pacote. A versão vem do `manifest.json`, e cada envio à loja precisa de uma versão maior que a anterior. O `.gitignore` já impede que o `dist/`, a chave `.pem` de assinatura e o `node_modules` sejam versionados.
+
+A política de privacidade está em [PRIVACY.md](PRIVACY.md). O link dela no GitHub é o que vai no campo de política de privacidade do painel da loja.
 
 ## Tecnologias
 
