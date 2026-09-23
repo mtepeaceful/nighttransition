@@ -1,6 +1,6 @@
 # NightTransition
 
-Extensão de navegador (Manifest V3) que aplica um ritual de desaceleração digital antes de dormir: escurece as páginas gradualmente através de um filtro de cor com base fotobiológica, e avisa quando você passa tempo demais em sites de alto estímulo durante a noite.
+Extensão de navegador (Manifest V3) que aplica um ritual de desaceleração digital antes de dormir: aquece a cor das páginas aos poucos com um filtro de base fotobiológica e avisa quando você passa tempo demais em sites de alto estímulo durante a noite.
 
 ## Por quê
 
@@ -57,7 +57,7 @@ A extensão não faz nenhuma requisição externa. Se algum dia fizer, a chamada
 
 ### Segurança por isolamento (anti-DOM Skimming)
 
-Tudo o que é configuração ou dado do usuário (horários, lista de sites, intensidade) é exibido e editado **somente no Popup**, que roda na origem `chrome-extension://` e está fora do alcance de scripts da página. O content script roda no *Isolated World* padrão (sem `world: "MAIN"`) e injeta apenas elementos visuais sem campos de entrada: o overlay de cor e o modal de lembrete. Assim nenhum script da página consegue ler dados da extensão pelo DOM (*DOM Skimming*) nem contaminar protótipos compartilhados (*Prototype Pollution*).
+Tudo o que é configuração ou dado do usuário (horários, temperatura, lista de sites) é exibido e editado **somente no Popup**, que roda na origem `chrome-extension://` e está fora do alcance de scripts da página. O content script roda no *Isolated World* padrão (sem `world: "MAIN"`) e injeta apenas elementos visuais sem campos de entrada: o overlay de cor e o modal de lembrete. Assim nenhum script da página consegue ler dados da extensão pelo DOM (*DOM Skimming*) nem contaminar protótipos compartilhados (*Prototype Pollution*).
 
 O DOM é montado apenas com `createElement` e `textContent`. Não há `innerHTML` nem `document.write()`, e o hostname exibido no lembrete nunca é interpretado como HTML.
 
@@ -89,7 +89,7 @@ night-transition/
 ├── manifest.json
 ├── README.md
 ├── PRIVACY.md                     # política de privacidade (URL usada na Chrome Web Store)
-├── .gitignore                     # chaves .pem, pacotes .zip/.crx, segredos, node_modules
+├── .gitignore                     # chaves .pem, pacotes .zip/.crx, .env/.npmrc, node_modules, temp/
 ├── src/
 │   ├── background/
 │   │   └── service-worker.js      # orquestração, regras de negócio, storage, roteamento de mensagens
@@ -116,7 +116,7 @@ night-transition/
 │       ├── icon-48.png
 │       └── icon-128.png
 └── tests/                         # só desenvolvimento, fora do pacote publicado
-    ├── package.json               # scripts test / lint / check e devDependencies
+    ├── package.json               # scripts test / lint / check / pack e devDependencies
     ├── eslint.config.js           # regras de segurança do ESLint
     ├── night-phase.test.js
     ├── site-usage.test.js
@@ -170,9 +170,24 @@ cd tests
 npm run pack
 ```
 
-O script roda `npm run check` e, se tudo passar, gera `dist/night-transition-<versão>.zip` com apenas `manifest.json`, `src/` e `assets/`, com o manifest na raiz. `tests/`, `README.md`, `PRIVACY.md` e `.gitignore` não entram no pacote. A versão vem do `manifest.json`, e cada envio à loja precisa de uma versão maior que a anterior. O `.gitignore` já impede que o `dist/`, a chave `.pem` de assinatura e o `node_modules` sejam versionados.
+O script roda `npm run check` e, se tudo passar, gera `dist/night-transition-<versão>.zip` com apenas `manifest.json`, `src/` e `assets/`, com o manifest na raiz. `tests/`, `README.md`, `PRIVACY.md` e `.gitignore` não entram no pacote. A versão vem do `manifest.json`, e cada envio à loja precisa de uma versão maior que a anterior. O `.gitignore` já impede que o `dist/`, a chave `.pem` de assinatura, o `.npmrc` (que pode guardar o token do npm) e o `node_modules` sejam versionados.
 
-A política de privacidade está em [PRIVACY.md](PRIVACY.md). O link dela no GitHub é o que vai no campo de política de privacidade do painel da loja.
+A política de privacidade está em [PRIVACY.md](PRIVACY.md). O link dela no GitHub é o que vai no campo de política de privacidade do painel da loja. Para o link funcionar, o repositório precisa ser público.
+
+## Publicação na Chrome Web Store
+
+1. Crie a conta de desenvolvedor no [painel da Chrome Web Store](https://chrome.google.com/webstore/devconsole). A taxa é de US$ 5, paga uma vez, e a conta Google precisa ter verificação em duas etapas.
+2. Gere o pacote com `npm run pack` e teste o `.zip` descompactado em um perfil limpo do Chrome (**Carregar sem compactação**).
+3. No painel, envie o `.zip` e preencha a página da loja: descrição, categoria, idioma Português (Brasil), ícone 128×128, pelo menos uma captura de 1280×800 e o bloco promocional de 440×280.
+4. Na aba **Privacidade**:
+   - **Finalidade única:** ritual noturno de desaceleração digital, que aquece a cor das páginas à noite e lembra o usuário de pausar em sites de alto estímulo.
+   - **Permissões:** use as justificativas da tabela [Princípio do menor privilégio](#princípio-do-menor-privilégio). Para o acesso a todos os sites, explique que o content script só aplica o overlay de cor e mostra o lembrete, e que o filtro precisa cobrir qualquer página.
+   - **Código remoto:** não.
+   - **Dados:** nenhum dado é coletado nem enviado ao desenvolvedor.
+   - **Política de privacidade:** link do `PRIVACY.md`.
+5. Publique primeiro como **Não listada** para testar a versão da loja e depois torne pública.
+
+Como o content script roda em `<all_urls>`, a extensão passa por revisão aprofundada, que pode levar de alguns dias a algumas semanas.
 
 ## Tecnologias
 
