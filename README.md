@@ -1,6 +1,6 @@
 # NightTransition
 
-Extensão de navegador (Manifest V3) que aplica um ritual de desaceleração digital antes de dormir: escurece as páginas gradualmente através de um filtro de cor com base fotobiológica, e avisa quando você passa tempo demais em sites de alto estímulo durante a noite.
+Ritual noturno de desaceleração: aquece a cor das páginas aos poucos e lembra você de pausar em sites de alto estímulo.
 
 ## Por quê
 
